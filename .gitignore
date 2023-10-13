@@ -1,0 +1,9 @@
+node_modules
+
+*.class
+
+__pycache__
+
+.s
+
+env.list

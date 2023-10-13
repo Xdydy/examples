@@ -1,0 +1,6 @@
+GET  http://0.0.0.0:9000 HTTP/1.1
+content-type: application/json
+
+{
+    "text" :"hello world"
+}

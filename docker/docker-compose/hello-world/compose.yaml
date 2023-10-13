@@ -1,0 +1,11 @@
+services:
+  web:
+    build: ./flask
+    ports:
+      - "8000:5000"
+    volumes:
+      - ./flask:/code
+    environment:
+      FLASK_DEBUG: "true"
+  redis: 
+    image: "redis:alpine"

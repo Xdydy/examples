@@ -1,0 +1,19 @@
+.DS_Store
+main
+input
+
+# Files
+README
+Makefile
+Dockerfile
+Dockerfile.dev
+
+# Directories
+functions/
+test/
+
+# Generated files
+coverage/
+var/
+node_modules/
+build/

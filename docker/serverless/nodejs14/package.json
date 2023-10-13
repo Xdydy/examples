@@ -1,0 +1,42 @@
+{
+  "author": "aliyun-fc",
+  "name": "aliyun-fc-nodejs",
+  "version": "1.0.0",
+  "description": "This package contains nodejs container agent.",
+  "main": "src/server.js",
+  "license": "UNLICENSED",
+  "readme": "README",
+  "repository": "http://gitlab.alibaba-inc.com/serverless/lambda",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@pandorajs/component-actuator-server": "^3.0.1",
+    "@pandorajs/component-decorator": "^3.0.1",
+    "@pandorajs/component-process-info": "^3.0.1",
+    "@pandorajs/core-sdk": "^3.0.1",
+    "@pandorajs/hub": "^3.0.1",
+    "express": "^4.14.0",
+    "winston": "^2.2.0",
+    "winston-daily-rotate-file": "^1.2.0",
+    "body-parser": "^1.15.2",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "co": "^4.6.0",
+    "body": "^5.1.0",
+    "istanbul": "^0.4.4",
+    "js-beautify": "^1.6.12",
+    "raw-body": "^2.3.2",
+    "mocha": "^3.0.2"
+  },
+  "engines": {
+    "node": "*",
+    "npm": ">=2.15.8"
+  },
+  "scripts": {
+    "lint": "find src test -name '*.js' | xargs -I F js-beautify -r F",
+    "start": "./agent.sh start",
+    "test": "istanbul cover _mocha -- -t 10000"
+  }
+}
