@@ -5,9 +5,9 @@ const port = 3000;
 
 // 使用 body-parser 中间件来解析 JSON 请求体
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // 使用 body-parser 中间件来解析表单请求体
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // 处理 POST 请求
 app.post('/', (req, res) => {
