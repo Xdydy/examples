@@ -32,8 +32,16 @@ for obj1 in objects_name:
             continue
         for relationship_str in relationship_list:
             if obj1 in relationship_str and obj2 in relationship_str:
-                relationship.append((obj1,obj2))
+                if (obj2,obj1) not in relationship:
+                    relationship.append((obj1,obj2))
 
-print(objects_name)
-print('\n')
-print(relationship)
+# print(objects_name)
+# print('\n')
+# print(relationship)
+
+output_file = "output_relationship.txt"
+with open(output_file,'w',encoding='utf-8') as file:
+    for _tuple in relationship:
+        for _ in _tuple: 
+            file.write(_ + " ")   
+        file.write('\n')

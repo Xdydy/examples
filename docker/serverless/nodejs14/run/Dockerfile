@@ -8,4 +8,4 @@ RUN rm -rf /var/runtime /var/lang && \
 COPY commons/function-compute-mock.sh /var/fc/runtime/nodejs14/mock
 COPY commons/nodejs-agent.sh /var/fc/runtime/nodejs14/agent.sh
 
-ENTRYPOINT ["/var/fc/runtime/nodejs14/mock"]
+ENTRYPOINT ["bash"]
