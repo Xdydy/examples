@@ -6,53 +6,54 @@ import (
 
 // 定义接口类型 Callback
 type Callback interface {
-	Call(params ...interface{})
+	Call(params ...interface{}) interface{}
 }
 
 // 实现 Callback 接口的函数
-type FuncWithoutArgs func()
-type FuncWithArgs func(params ...interface{})
+type Function func(a,b int) int
 
-func (f FuncWithoutArgs) Call(params ...interface{}) {
-	f()
+func (fn Function) Call(params ...interface{}) interface{} {
+	a, _ := params[0].(int)
+	b, _ := params[1].(int)
+
+	return fn(a,b)
 }
 
-func (f FuncWithArgs) Call(params ...interface{}) {
-	f(params...)
+func add(a,b int) int {
+	return a+b
+}
+
+type Node struct {
+
+}
+
+func (n *Node) add(a,b int) int {
+	return a+b
 }
 
 func main() {
 	// 创建一个字符串到 Callback 的映射
 	callbackMap := make(map[string]Callback)
 
-	// 添加无参数回调函数到映射
-	callbackMap["funcWithoutArgs"] = FuncWithoutArgs(func() {
-		fmt.Println("Function without arguments is called")
-	})
+	callbackMap["a"] = Function(add)
+	
+	var n Node
+	callbackMap["b"] = Function(n.add)
 
-	// 添加带参数回调函数到映射
-	callbackMap["funcWithArgs"] = FuncWithArgs(func(params ...interface{}) {
-		if len(params) == 2 {
-			a, _ := params[0].(int)
-			b, _ := params[1].(int)
-			result := a + b
-			fmt.Printf("Addition result with arguments: %d\n", result)
-		} else {
-			fmt.Println("Invalid number of arguments")
-		}
-	})
 
 	// 调用映射中的回调函数
-	callback, found := callbackMap["funcWithoutArgs"]
+	callback, found := callbackMap["a"]
 	if found {
-		callback.Call()
+		result := callback.Call(1,2)
+		fmt.Println(result)
 	} else {
 		fmt.Println("Callback not found")
 	}
 
-	callback, found = callbackMap["funcWithArgs"]
+	callback, found = callbackMap["b"]
 	if found {
-		callback.Call(5, 3)
+		result := callback.Call(5, 3)
+		fmt.Println(result)
 	} else {
 		fmt.Println("Callback not found")
 	}

@@ -1,0 +1,19 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "jsdom": "^23.2.0",
+    "playwright": "^1.40.1",
+    "puppeteer": "^21.7.0",
+    "xmldom": "^0.6.0"
+  }
+}

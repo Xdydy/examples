@@ -1,0 +1,9 @@
+POST http://0.0.0.0:7071/api/counter1/1
+
+###
+
+POST http://0.0.0.0:7071/api/counter1/1
+
+
+###
+GET http://0.0.0.0:7071/api/counter1/1
