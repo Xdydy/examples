@@ -1,20 +1,10 @@
-def func():
-    print("func() called")
-    ...
+import subprocess
+zen_of_python = subprocess.check_output(["python", "-c", "import this"])
+corpus = zen_of_python.split()
 
-def func(a):
-    print("func(a) called")
-    ...
-
-def func(a, b):
-    print("func(a, b) called")
-    ...
-
-def func(*args):
-    for arg in args:
-        print(arg)
-
-func(1)
-func(1,2)
-func(1,2,3)
-
+num_partitions = 3
+chunk = len(corpus) // num_partitions
+partitions = [
+    corpus[i * chunk: (i + 1) * chunk] for i in range(num_partitions)
+]
+print(partitions)
