@@ -14,6 +14,8 @@ class Actor:
 
 @ray.remote
 def combine(x,y):
+    a1 = Actor.bind(10)
+    a1.get.bind()
     return x+y
 
 a1 = Actor.bind(10)
