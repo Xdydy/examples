@@ -15,11 +15,16 @@ async def http_start(req: func.HttpRequest, client):
 # Orchestrator
 @myApp.orchestration_trigger(context_name="context")
 def hello_orchestrator(context):
+    for i in range(3):
+        import time
+        time.sleep(1)
+        print(f"Hello {i}")
     result1 = yield context.call_activity("hello", "Seattle")
     result2 = yield context.call_activity("hello", "Tokyo")
     result3 = yield context.call_activity("hello", "London")
+    print("Orchestrator ended")
 
-    return [result1, result2, result3]
+    return [result1,result2,result3]
 
 # Activity
 @myApp.activity_trigger(input_name="city")

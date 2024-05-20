@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "func",
-			"label": "func: host start",
+			"label": "func:hoststart",
 			"command": "host start",
 			"problemMatcher": "$func-node-watch",
 			"isBackground": true,
