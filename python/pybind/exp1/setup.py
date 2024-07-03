@@ -3,13 +3,13 @@ from setuptools import setup
 
 ext_modules = [
     Pybind11Extension(
-        "example",
+        "pyexample",
         ['src/main.cpp']
     )
 ]
 
 setup(
-    name="example",
+    name="pyexample",
     ext_modules=ext_modules,
     cmdclass={"build_ext":build_ext}
 )
