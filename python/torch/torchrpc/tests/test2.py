@@ -3,6 +3,6 @@ import time
 import os
 os.environ['MASTER_ADDR'] = "localhost"
 os.environ['MASTER_PORT'] = "8000"
-rpc.init_rpc('driver',rank=0)
+rpc.init_rpc('worker1',rank=1)
 
 time.sleep(3600)
