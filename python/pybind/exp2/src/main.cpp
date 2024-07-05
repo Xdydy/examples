@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
-
+#include <iostream>
 int add(int i, int j) {
+    std::cout << "add func\n";
     return i + j;
 }
 
