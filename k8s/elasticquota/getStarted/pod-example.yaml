@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-example
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/name: "quota-example"
+spec:
+  schedulerName: koord-scheduler
+  containers:
+  - command:
+    - sleep
+    - 365d
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    name: curlimage
+    resources:
+      limits:
+        cpu: 40m
+        memory: 30Mi
+      requests:
+        cpu: 40m
+        memory: 30Mi
+  restartPolicy: Always
