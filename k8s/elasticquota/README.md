@@ -56,3 +56,28 @@ kubectl apply -f pod2-example.yaml
 
 > 无法直接删除还有child pods的Quota
 > ![alt text](./assets/image-3.png)
+
+- 如果`pod`不指定执行的`scheduler`，那么`pod`还是会被成功调度，但是通过查询配额，还是能够查到其消耗资源的记录
+
+![alt text](assets/image-4.png)
+
+
+## 父子配额
+
+- 创建父子配额
+
+```bash
+cd parentQuota
+kubectl apply -f parent-quota.yaml
+```
+
+## Evict
+
+通过
+
+```bash
+kubectl get configmaps -n koordinator-system koord-scheduler-config -o yaml
+```
+
+可以通过查看`evict/config.yaml`得到原来的
+

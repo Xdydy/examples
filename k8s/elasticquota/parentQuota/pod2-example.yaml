@@ -4,13 +4,13 @@ metadata:
   name: pod2-example
   namespace: default
   labels:
-    quota.scheduling.koordinator.sh/name: "quota-child2"
+    quota.scheduling.koordinator.sh/name: "quota-child1"
 spec:
   schedulerName: koord-scheduler
   containers:
   - command:
     - sleep
-    - 365d
+    - 1m
     image: busybox
     imagePullPolicy: IfNotPresent
     name: curlimage
@@ -21,4 +21,4 @@ spec:
       requests:
         cpu: 40m
         memory: 30Mi
-  restartPolicy: Always
+  restartPolicy: Never

@@ -1,0 +1,48 @@
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-parent
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "true"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 500m
+    memory: 40Mi
+---
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-child1
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "false"
+    quota.scheduling.koordinator.sh/parent: "quota-parent"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 500m
+    memory: 40Mi
+---
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-child2
+  namespace: default
+  annotations:
+    quota.scheduling.koordinator.sh/evict-pods-exceed-min: "true"  # 允许全部驱逐
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "false"
+    quota.scheduling.koordinator.sh/parent: "quota-parent"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 0
+    memory: 0

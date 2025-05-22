@@ -1,0 +1,46 @@
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-parent
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "true"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 500m
+    memory: 40Mi
+---
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-child1
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "false"
+    quota.scheduling.koordinator.sh/parent: "quota-parent"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 500m
+    memory: 40Mi
+---
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-child2
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/is-parent: "false"
+    quota.scheduling.koordinator.sh/parent: "quota-parent"
+spec:
+  max:
+    cpu: 500m
+    memory: 40Mi
+  min:
+    cpu: 0
+    memory: 0

@@ -1,0 +1,16 @@
+koord-scheduler:
+  config:
+    profiles:
+      - pluginConfig:
+          - name: ElasticQuota
+            args:
+              # 必须显式包含所有需要覆盖的参数
+              apiVersion: kubescheduler.config.k8s.io/v1
+              kind: ElasticQuotaArgs
+              quotaGroupNamespace: koordinator-system
+              enableCheckParentQuota: true
+              monitorAllQuotas: true
+              revokePodInterval: "5s"
+              delayEvictTime: "5s"
+              enableOvercommitEviction: true
+              evictPodsExceedMin: true
