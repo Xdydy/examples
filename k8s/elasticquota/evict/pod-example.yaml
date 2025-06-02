@@ -4,9 +4,7 @@ metadata:
   name: pod-example
   namespace: default
   labels:
-    quota.scheduling.koordinator.sh/name: "quota-child2"
-    # 关键：标记为低优先级
-    scheduling.koordinator.sh/priority-class: "low-priority"
+    quota.scheduling.koordinator.sh/name: "quota-child1"
 spec:
   schedulerName: koord-scheduler
   containers:

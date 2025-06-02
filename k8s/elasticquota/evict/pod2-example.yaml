@@ -4,7 +4,7 @@ metadata:
   name: pod2-example
   namespace: default
   labels:
-    quota.scheduling.koordinator.sh/name: "quota-child1"
+    quota.scheduling.koordinator.sh/name: "quota-child2"
 spec:
   schedulerName: koord-scheduler
   containers:
