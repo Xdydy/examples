@@ -1,0 +1,15 @@
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: ElasticQuota
+metadata:
+  name: quota-example
+  namespace: default
+  labels:
+    quota.scheduling.koordinator.sh/parent: ""
+    quota.scheduling.koordinator.sh/is-parent: "false"
+spec:
+  max:
+    cpu: 1Gi
+    memory: 40Mi
+  min:
+    cpu: 1Gi
+    memory: 20Mi

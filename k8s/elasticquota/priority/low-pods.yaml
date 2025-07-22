@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busy-low-priority
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+        quota.scheduling.koordinator.sh/name: "quota-example"
+    spec:
+      schedulerName: koord-scheduler
+      priorityClassName: low-priority  # 引用已创建的 PriorityClass
+      containers:
+      - name: busybox
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command: 
+          - sleep
+          - "10d"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 10Mi
