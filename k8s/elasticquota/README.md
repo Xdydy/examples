@@ -81,3 +81,84 @@ kubectl get configmaps -n koordinator-system koord-scheduler-config -o yaml
 
 可以通过查看`evict/config.yaml`得到原来的
 
+# GangScheduler
+
+## Quick Start
+
+```yaml
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: PodGroup
+metadata:
+  name: gang-example
+  namespace: default
+spec:
+  scheduleTimeoutSeconds: 100
+  minMember: 2
+```
+
+![Gang](assets/gang.png)
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-example1
+  namespace: default
+  labels:
+    pod-group.scheduling.sigs.k8s.io: gang-example
+spec:
+  schedulerName: koord-scheduler
+  containers:
+  - command:
+    - sleep
+    - 365d
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    name: curlimage
+    resources:
+      limits:
+        cpu: 40m
+        memory: 40Mi
+      requests:
+        cpu: 40m
+        memory: 40Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+  restartPolicy: Always
+```
+
+![Pods1](assets/gang-pod1.png)
+
+![After pod1](assets/gang-after-pod1.png)
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-example2
+  namespace: default
+  labels:
+    pod-group.scheduling.sigs.k8s.io: gang-example
+spec:
+  schedulerName: koord-scheduler
+  containers:
+  - command:
+    - sleep
+    - 365d
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    name: curlimage
+    resources:
+      limits:
+        cpu: 40m
+        memory: 40Mi
+      requests:
+        cpu: 40m
+        memory: 40Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+  restartPolicy: Always
+```
+
+
+![After pod2](assets/gang-after-pod2.png)

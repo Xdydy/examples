@@ -1,0 +1,8 @@
+apiVersion: scheduling.sigs.k8s.io/v1alpha1
+kind: PodGroup
+metadata:
+  name: gang-example
+  namespace: default
+spec:
+  scheduleTimeoutSeconds: 100
+  minMember: 2
