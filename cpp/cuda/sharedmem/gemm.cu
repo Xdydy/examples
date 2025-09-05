@@ -27,20 +27,31 @@ __global__ void gemm(int *a, int *b, int *c, int N) {
     }
 }
 
+__global__ void gemmBaseline(int *a, int *b, int *c, int N) {
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    int col = blockIdx.y * blockDim.y + threadIdx.y;
+
+    int sum = 0 ;
+    for (int i = 0; i < N; i++) {
+        sum += getElement(a, row, i, N) * getElement(b, i, col, N);
+    }
+    c[row * N + col] = sum;
+}
+
 int main() {
-    int N = 512;
+    int N = 1024;
     size_t size = N * N * sizeof(int);
 
-    int ha[N][N];
-    int hb[N][N];
-    int hc[N][N];
+    int *ha = (int*)malloc(size);
+    int *hb = (int*)malloc(size);
+    int *hc = (int*)malloc(size);
 
     // Initialize matrices
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            ha[i][j] = i + j;
-            hb[i][j] = i - j;
-            hc[i][j] = 0;
+            ha[i*N+j] = 1;
+            hb[i*N+j] = 1;
+            hc[i*N+j] = 0;
         }
     }
 
@@ -59,14 +70,20 @@ int main() {
     dim3 numBlocks((N + threadsPerBlock.x - 1) / threadsPerBlock.x,
                    (N + threadsPerBlock.y - 1) / threadsPerBlock.y);
     std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-    gemm<<<numBlocks, threadsPerBlock>>>(d_a, d_b, d_c, N);
-
-    // Copy result back to host
+    gemmBaseline<<<numBlocks, threadsPerBlock>>>(d_a, d_b, d_c, N);
     cudaMemcpy(hc, d_c, size, cudaMemcpyDeviceToHost);
     cudaDeviceSynchronize();
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
-    std::cout << "Time taken: " << duration.count() << " seconds" << std::endl;
+    std::cout << "Baseline Time taken: " << duration.count() << " seconds" << std::endl;
+
+    start = std::chrono::high_resolution_clock::now();
+    gemm<<<numBlocks, threadsPerBlock>>>(d_a, d_b, d_c, N);
+    cudaMemcpy(hc, d_c, size, cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
+    end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+    std::cout << "gemm Time taken: " << duration.count() << " seconds" << std::endl;
 
     // Free device memory
     cudaFree(d_a);
@@ -74,26 +91,24 @@ int main() {
     cudaFree(d_c);
 
     // check result
-    int res[N][N];
+    int *res = (int*)malloc(size);
     start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             int sum = 0 ;
             for (int k = 0; k < N; k++) {
-                sum += ha[i][k] * hb[k][j];
+                sum += ha[i*N+k] * hb[k*N+j];
             }
-            res[i][j] = sum;
+            res[i*N+j] = sum;
         }
     }
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
     std::cout << "CPU Time taken: " << duration.count() << " seconds" << std::endl;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (res[i][j] != hc[i][j]) {
-                std::cout << "Mismatch at (" << i << ", " << j << "): " << res[i][j] << " != " << hc[i][j] << std::endl;
-                return -1;
-            }
+    for (int i = 0; i < size; i++) {
+        if (res[i] != hc[i]) {
+            std::cout << "Mismatch at (" << i << "): " << res[i] << " != " << hc[i] << std::endl;
+            return -1;
         }
     }
 
